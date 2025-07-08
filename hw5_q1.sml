@@ -8,7 +8,7 @@ datatype 'a Seq = Nil | Cons of 'a * (unit -> 'a Seq);
 datatype 'a DSeq = DNil | DCons of 'a * (unit -> 'a DSeq) * (unit -> 'a DSeq);
 exception NoDeepThought;
 
-(* פונקציה 1: בודקת אם מסלול הוא חוקי ומסתיים במחשב העל *)
+
 val good_path = fn path =>
   let
     fun check Nil _ = false
@@ -23,7 +23,7 @@ val good_path = fn path =>
     check path false
   end;
 
-(* פונקציה 2: יוצרת מסלול מרשימת כיוונים במטריצה עצלה *)
+
 val get_flat_path = fn matrix =>
   fn directions =>
     let
@@ -41,7 +41,7 @@ val get_flat_path = fn matrix =>
       follow matrix directions (fn () => Nil)
     end;
 
-(* פונקציה 3: מייצרת את כל המסלולים האפשריים להגיע ליעד *)
+
 val find_all_paths = fn (rows, cols) =>
   let
     fun go (i,j) =
@@ -57,7 +57,7 @@ val find_all_paths = fn (rows, cols) =>
     go (rows, cols)
   end;
 
-(* פונקציה 4: מחפשת את הדרך החוקית הקצרה ביותר למחשב העל *)
+
 val minimal_distance_for_deep_thought = fn matrix =>
   let
     val max_dim = 10
