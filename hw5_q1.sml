@@ -60,23 +60,36 @@ val find_all_paths = fn (rows, cols) =>
 (* פונקציה 4: מחפשת את הדרך החוקית הקצרה ביותר למחשב העל *)
 val minimal_distance_for_deep_thought = fn matrix =>
   let
-    (* נניח שהמטריצה בגודל סופי, למשל 5x5 – או נגדיר סריקה עצלה לדוגמה *)
-    val max_dim = 10  (* אפשר להגדיל *)
-    val paths = List.concat (List.tabulate (max_dim, fn i =>
-                     List.tabulate (max_dim, fn j => find_all_paths(i,j))))
-    fun first_valid [] = raise NoDeepThought
+    val max_dim = 10
+
+    (* Flattening the list of lists of lists into a flat list of lazy direction sequences *)
+    val paths : direction Seq list =
+      List.concat (
+        List.tabulate (max_dim, fn i =>
+          List.concat (
+            List.tabulate (max_dim, fn j =>
+              find_all_paths (i, j)
+            )
+          )
+        )
+      )
+
+    fun first_valid [] = NONE
       | first_valid (p::ps) =
           let
             val flat = get_flat_path matrix p
           in
             if good_path flat then SOME (p, flat) else first_valid ps
           end
+
     fun count_len Nil = 0
       | count_len (Cons(_, xf)) = 1 + count_len (xf())
+
   in
     case first_valid paths of
         NONE => raise NoDeepThought
       | SOME (_, flat) => count_len flat
   end;
+
 
 
